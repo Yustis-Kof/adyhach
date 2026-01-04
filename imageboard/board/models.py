@@ -1,0 +1,28 @@
+from django.db import models
+from django.utils import timezone
+
+class Board(models.Model):
+    code = models.CharField(max_length=8)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.code
+
+class Thread(models.Model):
+    title = models.CharField(max_length=200)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, null=True)
+    content = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title
+
+class Post(models.Model):
+    content = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(default=timezone.now)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.content
+
+
