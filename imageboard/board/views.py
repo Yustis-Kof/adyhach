@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Thread, Post
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+
 
 def home(request):
     return render(request, 'home.html')

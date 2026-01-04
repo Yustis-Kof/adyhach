@@ -3,28 +3,32 @@
     {{ name }}
 {% endblock title %}
 {% block content %}
-    {% for thread in threads %}
-    <div class="post">
-        {% for post in thread.post_set.all %}
-            
-            {% if post.id == thread.post_set.first.id %}
-
-                <p class="post-title">{{ thread.title }}</p>
-                <p class="post-author">Анон</p>
-                <p class="post-date">{{ thread.date|date:'Y-m-d H:i' }}</p>
-                <p class="post-id">#{{ thread.post_set.first.id }}</p>
-                <p class="post-content">{{ thread.post_set.first.content }}</p>
+    {% if threads %}
+        {% for thread in threads %}
+        <div class="post">
+            {% for post in thread.post_set.all %}
                 
-            {% else %}
-                <div class="post reply">
-                <p class="post-author">Анон</p>
-                <p class="post-date">{{ post.date|date:'Y-m-d H:i' }}</p>
-                <p class="post-id">#{{ post.id }}</p>
-                <p class="post-content">{{ post.content }}</p>
-                </div>
-            {% endif %}
-            
+                {% if post.id == thread.post_set.first.id %}
+
+                    <p class="post-title">{{ thread.title }}</p>
+                    <p class="post-author">Анон</p>
+                    <p class="post-date">{{ thread.date|date:'Y-m-d H:i' }}</p>
+                    <p class="post-id">#{{ thread.post_set.first.id }}</p>
+                    <p class="post-content">{{ thread.post_set.first.content }}</p>
+                    
+                {% else %}
+                    <div class="post reply">
+                    <p class="post-author">Анон</p>
+                    <p class="post-date">{{ post.date|date:'Y-m-d H:i' }}</p>
+                    <p class="post-id">#{{ post.id }}</p>
+                    <p class="post-content">{{ post.content }}</p>
+                    </div>
+                {% endif %}
+                
+            {% endfor %}
+            </div>
         {% endfor %}
-        </div>
-    {% endfor %}
+    {% else %}
+        <p>Хм... На этой доске пока нет постов. Будь первым, Анон!</p>
+    {% endif %}
 {% endblock content %}
