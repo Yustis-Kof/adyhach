@@ -6,14 +6,15 @@ In principle, you should follow this steps:
 ```bash
 pip install -r requirements.txt
 ```
-2. Make and apply migrations
+2. Go to /imageboard/ folder
+3. Make and apply migrations
 ```bash
 python manage.py makemigrations
 ```
 ```bash
 python manage.py migrate
 ```
-3. Run server
+4. Run server
 ```bash
 python manage.py runserver
 ```
