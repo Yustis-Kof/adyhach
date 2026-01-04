@@ -31,4 +31,4 @@ If you want to use admin panel, create superuser via:
 python manage.py createsuperuser
 ```
 
-I hope I make everything clear
+I hope I made everything clear
