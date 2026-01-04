@@ -1,1 +1,1 @@
-simple #django imageboard engine
+simple django imageboard engine
