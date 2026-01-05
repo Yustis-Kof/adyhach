@@ -4,6 +4,7 @@ from django.utils import timezone
 class Board(models.Model):
     code = models.CharField(max_length=8)
     name = models.CharField(max_length=50)
+    last = models.IntegerField(default=0, null=True)
 
     def __str__(self):
         return self.code
@@ -13,6 +14,7 @@ class Thread(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, null=True)
     content = models.TextField(blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
+    last = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.title
