@@ -47,6 +47,7 @@
 }
 
 .post-content {
+    display: flex;
     margin-top: 6px;
     margin-bottom: 12px;
     font-family: arial, helvetica, sans-serif;
@@ -55,6 +56,13 @@
 h3 {
     color: red;
 }
+
+img {
+    display: flex;
+    margin-right: 5px;
+}
+
+
 
 #logout-form {
     display: inline;

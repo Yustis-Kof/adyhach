@@ -27,6 +27,6 @@ class Post(models.Model):
         return self.content
 
 class Attachment(models.Model):
-    file = models.FileField(upload_to="vault")
+    file = models.FileField(upload_to="attachments")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
 

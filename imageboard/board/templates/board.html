@@ -9,22 +9,23 @@
             {% for post in thread.post_set.all %}
                 
                 {% if post.id == thread.post_set.first.id %}
-
+                    <div>
                     <p class="post-title">{{ thread.title }}</p>
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ thread.date|date:'Y-m-d H:i' }}</p>
                     <p class="post-id">#{{ thread.post_set.first.id }}</p>
-                    <p class="post-content">{{ thread.post_set.first.content }}</p>
-                    
                 {% else %}
                     <div class="post reply">
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ post.date|date:'Y-m-d H:i' }}</p>
-                    <p class="post-id">#{{ post.id }}</p>
-                    <p class="post-content">{{ post.content }}</p>
-                    </div>
+                    <p class="post-id">#{{ post.id }}</p>                    
                 {% endif %}
-                
+                <p class="post-content">
+                {% for file in post.attachment_set.all %}
+                    <img src="{{file.file.url}}">
+                {% endfor %}
+                {{ post.content }}</p>
+                </div>
             {% endfor %}
             </div>
         {% endfor %}
