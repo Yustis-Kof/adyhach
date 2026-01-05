@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Board, Thread, Post
+from .models import *
 
-admin.site.register([Board, Thread, Post])
+admin.site.register([Board, Thread, Post, Attachment])

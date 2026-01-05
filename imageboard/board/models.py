@@ -18,6 +18,7 @@ class Thread(models.Model):
         return self.title
 
 class Post(models.Model):
+    local_id = models.IntegerField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, null=True)
@@ -25,4 +26,7 @@ class Post(models.Model):
     def __str__(self):
         return self.content
 
+class Attachment(models.Model):
+    file = models.FileField(upload_to="vault")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
 
