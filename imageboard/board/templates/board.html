@@ -27,13 +27,24 @@
                 {{ post.content }}</p>
                 </div>
             {% endfor %}
-            </div>
+        <div class='post reply'>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="board" value="{{ board }}">
+            <input type="hidden" name="thread" value="{{ thread.id }}">
+            <textarea name="content" placeholder="Написать ответ в тред..." required></textarea>
+            <br>
+            <div style="display: flex; justify-content: center; margin-bottom: 3px;"><button type="submit">Ответить</button></div>
+        </form>
+        </div>
+        </div>
         {% endfor %}
     {% else %}
         <p>Хм... На этой доске пока нет постов. Будь первым, Анон!</p>
     {% endif %}
 
-    
+
+
     <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}

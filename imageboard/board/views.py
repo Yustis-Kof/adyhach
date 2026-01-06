@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .models import Thread, Post
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView
+
 
 
 def home(request):
@@ -31,3 +33,26 @@ class board(ListView):
     context_object_name = 'threads'
     ordering = '-id'
     paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        # Да, это реально решение из документации
+        context = super().get_context_data(**kwargs)
+
+        context["name"] = "Бред"
+        context["board"] = "b"
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        #form = self.form_class(request.POST)
+        #if form.is_valid():
+        #    print(form)
+        form = request.POST.dict()
+        Post.objects.create(
+            thread = Thread.objects.get(id=form["thread"]),
+            content = form["content"]
+        )
+
+        self.object_list = self.get_queryset()
+        allow_empty = self.get_allow_empty()
+        context=self.get_context_data()
+        return HttpResponseRedirect(reverse('b')) # Редиректим к этой же странице, чтобы не было повторной отправки
