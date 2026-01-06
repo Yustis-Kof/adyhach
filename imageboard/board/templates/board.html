@@ -13,12 +13,12 @@
                     <p class="post-title">{{ thread.title }}</p>
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ thread.date|date:'Y-m-d H:i' }}</p>
-                    <p class="post-id">#{{ thread.post_set.first.id }}</p>
+                    <p class="post-id">#{{ thread.post_set.first.local_id }}</p>
                 {% else %}
                     <div class="post reply">
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ post.date|date:'Y-m-d H:i' }}</p>
-                    <p class="post-id">#{{ post.id }}</p>                    
+                    <p class="post-id">#{{ post.local_id }}</p>                    
                 {% endif %}
                 <p class="post-content">
                 {% for file in post.attachment_set.all %}
