@@ -27,7 +27,10 @@ def faq(request):
 #
 #    return render(request, 'board.html', context)
 
-class board(ListView):
+
+
+class BoardView(ListView):
+    url = 'board'
     model = Thread
     template_name = 'board.html'
     context_object_name = 'threads'
@@ -58,9 +61,9 @@ class board(ListView):
             self.object_list = self.get_queryset()
             allow_empty = self.get_allow_empty()
             context=self.get_context_data()
-        return HttpResponseRedirect(reverse('board', kwargs={"code": self.kwargs['code']})) # Редиректим к этой же странице, чтобы не было повторной отправки
+        return HttpResponseRedirect(reverse(self.url, kwargs=self.kwargs)) # Редиректим к этой же странице, чтобы не было повторной отправки
 
-class thread(ListView):
+class ThreadView(BoardView):
     model = Post
     template_name = 'thread.html'
     context_object_name = 'posts'
@@ -75,16 +78,4 @@ class thread(ListView):
         context["name"] = this_thread.title
         return context
 
-    def post(self, request, code, *args, **kwargs):
-        form = request.POST.dict()
-        print(request.POST)
-        if 'reply' in request.POST:
-            Post.objects.create(
-                thread = Thread.objects.get(id=form["thread"]),
-                content = form["content"]
-            )
 
-            self.object_list = self.get_queryset()
-            allow_empty = self.get_allow_empty()
-            context=self.get_context_data()
-        return HttpResponseRedirect(reverse('thread', kwargs=self.kwargs))

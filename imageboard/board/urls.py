@@ -10,8 +10,8 @@ urlpatterns = [
     path('faq/', views.faq, name="faq"),
     path('login/', auth_views.LoginView.as_view(template_name="login.html"), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
-    path('<slug:code>/', views.board.as_view(), name='board'),
-    path('<slug:code>/thread/<int:op_id>', views.thread.as_view(), name='thread'),
+    path('<slug:code>/', views.BoardView.as_view(), name='board'),
+    path('<slug:code>/thread/<int:op_id>', views.ThreadView.as_view(), name='thread'),
 ]
 
 
