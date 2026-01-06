@@ -16,6 +16,9 @@
             )
         </span>
     {% endif %}
+    {% for board in boards %}
+    <a href="{% url 'board' board %}">{{board}}</a>
+    {% endfor %}
     <a href="{% url 'home' %}">Домой</a><br>
     {% block content %}{% endblock content %}
 </body>

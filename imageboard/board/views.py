@@ -44,14 +44,11 @@ class board(ListView):
 
         context["name"] = Board.objects.get(code=self.kwargs['code']).name
         context["board"] = self.kwargs['code']
-        #print(self.code)
         return context
     
     def post(self, request, code, *args, **kwargs):
-        #form = self.form_class(request.POST)
-        #if form.is_valid():
-        #    print(form)
         form = request.POST.dict()
+        print(request)
         Post.objects.create(
             thread = Thread.objects.get(id=form["thread"]),
             content = form["content"]
