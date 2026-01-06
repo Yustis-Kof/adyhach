@@ -31,7 +31,7 @@ class board(ListView):
     model = Thread
     template_name = 'board.html'
     context_object_name = 'threads'
-    ordering = '-id'
+    ordering = '-last'
     paginate_by = 2
 
     def get_queryset(self):
@@ -48,13 +48,14 @@ class board(ListView):
     
     def post(self, request, code, *args, **kwargs):
         form = request.POST.dict()
-        print(request)
-        Post.objects.create(
-            thread = Thread.objects.get(id=form["thread"]),
-            content = form["content"]
-        )
+        print(request.POST)
+        if 'reply' in request.POST:
+            Post.objects.create(
+                thread = Thread.objects.get(id=form["thread"]),
+                content = form["content"]
+            )
 
-        self.object_list = self.get_queryset()
-        allow_empty = self.get_allow_empty()
-        context=self.get_context_data()
+            self.object_list = self.get_queryset()
+            allow_empty = self.get_allow_empty()
+            context=self.get_context_data()
         return HttpResponseRedirect(reverse('board', kwargs={"code": self.kwargs['code']})) # Редиректим к этой же странице, чтобы не было повторной отправки

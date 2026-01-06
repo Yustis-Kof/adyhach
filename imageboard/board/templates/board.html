@@ -9,22 +9,25 @@
             {% for post in thread.post_set.all %}
                 
                 {% if post.id == thread.post_set.first.id %}
-                    <div>
+                    <div id="{{post.local_id}}">
                     <p class="post-title">{{ thread.title }}</p>
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ thread.date|date:'Y-m-d H:i' }}</p>
-                    <p class="post-id">#{{ thread.post_set.first.local_id }}</p>
                 {% else %}
-                    <div class="post reply">
+                    <div class="post reply" id="{{post.local_id}}">
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ post.date|date:'Y-m-d H:i' }}</p>
-                    <p class="post-id">#{{ post.local_id }}</p>                    
                 {% endif %}
-                <p class="post-content">
-                {% for file in post.attachment_set.all %}
-                    <img src="{{file.file.url}}">
-                {% endfor %}
-                {{ post.content }}</p>
+                <p class="post-id"><a href="#{{ post.local_id }}">#</a>{{ post.local_id }}</p>
+                <div class="post-content">
+                    {% for file in post.attachment_set.all %}
+                        <div class="attachment">
+                            <a href="{{ file.file.url }}">{{ file.file.name }}</a>
+                            <img src="{{file.file.url}}">
+                        </div>
+                    {% endfor %}
+                    <p class="post-text">{{ post.content }}</p>
+                    </div>
                 </div>
             {% endfor %}
         <div class='post reply'>
@@ -34,7 +37,7 @@
             <input type="hidden" name="thread" value="{{ thread.id }}">
             <textarea name="content" placeholder="Написать ответ в тред..." required></textarea>
             <br>
-            <div style="display: flex; justify-content: center; margin-bottom: 3px;"><button type="submit">Ответить</button></div>
+            <div style="display: flex; justify-content: center; margin-bottom: 3px;"><button type="submit" name="reply">Ответить</button></div>
         </form>
         </div>
         </div>
