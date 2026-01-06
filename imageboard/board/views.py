@@ -59,3 +59,32 @@ class board(ListView):
             allow_empty = self.get_allow_empty()
             context=self.get_context_data()
         return HttpResponseRedirect(reverse('board', kwargs={"code": self.kwargs['code']})) # Редиректим к этой же странице, чтобы не было повторной отправки
+
+class thread(ListView):
+    model = Post
+    template_name = 'thread.html'
+    context_object_name = 'posts'
+
+    def get_context_data(self, **kwargs):
+        # Да, это реально решение из документации
+        context = super().get_context_data(**kwargs)
+
+        this_board = Board.objects.get(code=self.kwargs['code'])
+        this_thread = Post.objects.get(local_id=self.kwargs['op_id'], thread__board=this_board).thread
+        context["thread"] = this_thread
+        context["name"] = this_thread.title
+        return context
+
+    def post(self, request, code, *args, **kwargs):
+        form = request.POST.dict()
+        print(request.POST)
+        if 'reply' in request.POST:
+            Post.objects.create(
+                thread = Thread.objects.get(id=form["thread"]),
+                content = form["content"]
+            )
+
+            self.object_list = self.get_queryset()
+            allow_empty = self.get_allow_empty()
+            context=self.get_context_data()
+        return HttpResponseRedirect(reverse('thread', kwargs=self.kwargs))

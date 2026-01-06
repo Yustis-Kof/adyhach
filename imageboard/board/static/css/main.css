@@ -46,10 +46,18 @@
     font-style: italic;
 }
 
+.post-content {
+    display: flex;
+    margin-top: 0px;
+
+    margin-bottom: 12px;
+}
+
+
 .post-text {
     display: flex;
     margin-top: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 0px;
     font-family: arial, helvetica, sans-serif;
 }
 
@@ -57,9 +65,6 @@ h3 {
     color: red;
 }
 
-.post-content {
-    display: flex;
-}
 
 .attachment {
     display: flex;

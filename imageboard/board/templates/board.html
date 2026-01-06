@@ -18,7 +18,9 @@
                     <p class="post-author">Анон</p>
                     <p class="post-date">{{ post.date|date:'Y-m-d H:i' }}</p>
                 {% endif %}
-                <p class="post-id"><a href="#{{ post.local_id }}">#</a>{{ post.local_id }}</p>
+                <p class="post-id">
+                    <a href="#{{ post.local_id }}">#</a><a href="thread/{{ thread.post_set.first.local_id }}#{{ post.local_id }}">{{ post.local_id }}</a>
+                </p>
                 <div class="post-content">
                     {% for file in post.attachment_set.all %}
                         <div class="attachment">
@@ -30,7 +32,7 @@
                     </div>
                 </div>
             {% endfor %}
-        <div class='post reply'>
+        <div class='post reply' hidden>
         <form method="post">
             {% csrf_token %}
             <input type="hidden" name="board" value="{{ board }}">
