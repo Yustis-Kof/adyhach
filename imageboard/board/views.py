@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .models import Thread, Post
+from .models import Board, Thread, Post
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView
@@ -34,15 +34,20 @@ class board(ListView):
     ordering = '-id'
     paginate_by = 2
 
+    def get_queryset(self):
+        self.queryset = Thread.objects.filter(board__code=self.kwargs['code'])
+        return super().get_queryset()
+
     def get_context_data(self, **kwargs):
         # Да, это реально решение из документации
         context = super().get_context_data(**kwargs)
 
-        context["name"] = "Бред"
-        context["board"] = "b"
+        context["name"] = Board.objects.get(code=self.kwargs['code']).name
+        context["board"] = self.kwargs['code']
+        #print(self.code)
         return context
     
-    def post(self, request, *args, **kwargs):
+    def post(self, request, code, *args, **kwargs):
         #form = self.form_class(request.POST)
         #if form.is_valid():
         #    print(form)
@@ -55,4 +60,4 @@ class board(ListView):
         self.object_list = self.get_queryset()
         allow_empty = self.get_allow_empty()
         context=self.get_context_data()
-        return HttpResponseRedirect(reverse('b')) # Редиректим к этой же странице, чтобы не было повторной отправки
+        return HttpResponseRedirect(reverse('board', kwargs={"code": self.kwargs['code']})) # Редиректим к этой же странице, чтобы не было повторной отправки
