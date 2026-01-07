@@ -24,7 +24,7 @@
                         <img src="{{file.file.url}}">
                     </div>
                 {% endfor %}
-                <p class="post-text">{{ post.content }}</p>
+                <span class="post-text">{{ post.content|linebreaks }}</span>
                 </div>
             </div>
         {% endfor %}
