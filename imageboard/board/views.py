@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Board, Thread, Post
+from .forms import PostForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView
@@ -45,25 +46,14 @@ class BoardView(ListView):
         # Да, это реально решение из документации
         context = super().get_context_data(**kwargs)
 
+
         context["name"] = Board.objects.get(code=self.kwargs['code']).name
         context["board"] = self.kwargs['code']
         return context
     
-    def post(self, request, code, *args, **kwargs):
-        form = request.POST.dict()
-        print(request.POST)
-        if 'reply' in request.POST:
-            Post.objects.create(
-                thread = Thread.objects.get(id=form["thread"]),
-                content = form["content"]
-            )
-
-            self.object_list = self.get_queryset()
-            allow_empty = self.get_allow_empty()
-            context=self.get_context_data()
-        return HttpResponseRedirect(reverse(self.url, kwargs=self.kwargs)) # Редиректим к этой же странице, чтобы не было повторной отправки
 
 class ThreadView(BoardView):
+    url = 'thread'
     model = Post
     template_name = 'thread.html'
     context_object_name = 'posts'
@@ -74,8 +64,27 @@ class ThreadView(BoardView):
 
         this_board = Board.objects.get(code=self.kwargs['code'])
         this_thread = Post.objects.get(local_id=self.kwargs['op_id'], thread__board=this_board).thread
+
+        context["reply_form"] = PostForm(initial={'board': this_board.code, 'thread': this_thread.id})
+
         context["thread"] = this_thread
         context["name"] = this_thread.title
         return context
+
+    def post(self, request, code, *args, **kwargs):
+        form = PostForm(request.POST, request.FILES)
+        print()
+        if 'reply' in request.POST and form.is_valid():
+            """Post.objects.create(
+                thread = Thread.objects.get(id=form["thread"]),
+                content = form["content"]
+            ).save()"""
+            form.save()
+
+            self.object_list = self.get_queryset()
+            allow_empty = self.get_allow_empty()
+            context = self.get_context_data()
+        return HttpResponseRedirect(reverse(self.url, kwargs=self.kwargs)) # Редиректим к этой же странице, чтобы не было повторной отправки
+
 
 

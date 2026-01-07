@@ -29,14 +29,21 @@
             </div>
         {% endfor %}
     <div class='post reply'>
-    <form method="post">
+    
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
+        {% comment %}
         <input type="hidden" name="board" value="{{ board }}">
         <input type="hidden" name="thread" value="{{ thread.id }}">
+
         <textarea name="content" placeholder="Написать ответ в тред..." required></textarea>
+        <input type="file" name="files" multiple>
         <br>
+        {% endcomment %}
+        {{ reply_form.as_p }}
         <div style="display: flex; justify-content: center; margin-bottom: 3px;"><button type="submit" name="reply">Ответить</button></div>
-    </form>
+        </form>
     </div>
     </div>
 {% endblock content %}
