@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Board, Thread, Post
-from .forms import PostForm
+from .forms import PostForm, ThreadForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView
@@ -46,11 +46,20 @@ class BoardView(ListView):
         # Да, это реально решение из документации
         context = super().get_context_data(**kwargs)
 
-
         context["name"] = Board.objects.get(code=self.kwargs['code']).name
         context["board"] = self.kwargs['code']
+        context["thread_form"] = ThreadForm(initial={'board': self.kwargs['code']})
+        
         return context
     
+    def post(self, request, code, *args, **kwargs):
+        form = ThreadForm(request.POST, request.FILES)
+        print(request.POST)
+        print(form.errors)
+        if 'new_thread' in request.POST and form.is_valid():
+            new_thread = form.save()
+            return HttpResponseRedirect(reverse('thread', kwargs={'code': self.kwargs['code'], 'op_id': new_thread}))
+        return HttpResponseRedirect(reverse(self.url, kwargs=self.kwargs))
 
 class ThreadView(BoardView):
     url = 'thread'

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 class Board(models.Model):
-    code = models.CharField(max_length=8)
+    code = models.CharField(max_length=8, unique=True)
     name = models.CharField(max_length=50)
     last = models.IntegerField(default=0, null=True)
 
