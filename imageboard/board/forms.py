@@ -2,10 +2,14 @@ from django import forms
 from .models import Board, Post, Thread, Attachment
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
 class PostForm(forms.ModelForm):    # Вообще использовать ModelForm нецелесообразно, ведь заполняется лишь одно поле, да и то вручную.
     board = forms.SlugField(widget=forms.HiddenInput())
     thread = forms.SlugField(widget=forms.HiddenInput(), required=False)
-    files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False, label='')
+    files = forms.FileField(widget=MultipleFileInput(attrs={'multiple': True}), required=False, label='')
     
     """def __init__(self, board, **kwargs):
         super(PostForm, self).__init__(**kwargs)
