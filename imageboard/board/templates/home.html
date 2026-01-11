@@ -3,5 +3,15 @@
 Домяшняя стряниця
 {% endblock title %}
 {% block content %}
-    <iframe width='560' height='315' src='https://www.youtube.com/embed/PkT0PJwy8mI?autoplay=1&controls=0' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>
+    {% if boards %}
+        <h1>Добро пожаловать, Анон</h1>
+        Тебя могут заинтересовать следующие тематические доски:
+        <ul>
+        {% for board in boards %}
+            <li> <a href="{% url 'board' board.code %}"> /{{board.code}}/ — {{board.name}} </a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Добро пожаловать. Для начала зайдите в /admin и вручную создайте ваши доски</p>
+    {% endif %}
 {% endblock content %}
